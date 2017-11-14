@@ -1,4 +1,4 @@
-﻿        <#
+        <#
     .Synopsis
     This Script is designed to Move Contact objects between one pool and another, making DR pool failovers more manageable.
 
@@ -21,12 +21,18 @@
     [String]$Location
 
     ) 
+    
+    $Userpath = "c:\temp\"+$location+"users.csv"
+    $CAPpath = "c:\temp\"+$location+"CAP.csv"
+    $UMpath = "c:\temp\"+$location+"UM.csv"
+    $MRpath = "c:\temp\"+$location+"MR.csv"
+    
 
 
-Get-CsUser -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $Location -NoTypeInformation
-Get-CsCommonAreaPhone -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $Location -NoTypeInformation
-Get-CsExUmContact -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $Location -NoTypeInformation
-Get-CsMeetingRoom  -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $Location -NoTypeInformation
+Get-CsUser -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $Userpath -NoTypeInformation
+Get-CsCommonAreaPhone -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $CAPpath -NoTypeInformation
+Get-CsExUmContact -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $UMpath -NoTypeInformation
+Get-CsMeetingRoom  -Filter{RegistrarPool -eq $Pool1} | Select-Object * | Export-Csv -Path $MRpath -NoTypeInformation
 Get-CsUser -Filter{RegistrarPool -eq $Pool1} | Move-CsUser -Target $Pool2
 Get-CsCommonAreaPhone -Filter{RegistrarPool -eq $Pool1} | Move-CsCommonAreaPhone -Target $Pool2
 Get-CsExUmContact -Filter{RegistrarPool -eq $Pool1} | Move-CsExUmContact -Target $Pool2
